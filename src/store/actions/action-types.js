@@ -1,0 +1,5 @@
+export const SET_IS_LOADING = "SET_IS_LOADING";
+
+export const SET_IS_NAV_EXPANDED = "SET_IS_NAV_EXPANDED";
+
+export const SET_SELECTED_NAV = "SET_SELECTED_NAV";

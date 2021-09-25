@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    "yarn.lock": true,
+    "yarn-error.log": true,
+    ".gitignore": true,
+    "src/setupTests.js": true,
+    "src/reportWebVitals.js": true,
+  }
+}

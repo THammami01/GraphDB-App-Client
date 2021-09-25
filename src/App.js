@@ -1,25 +1,88 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  View,
+  NavPane,
+  NavPaneItem,
+  Text,
+  // Button,
+  // ProgressCircle,
+  // TextInput,
+} from "react-desktop/windows";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLaptopHouse,
+  faProjectDiagram,
+  // faInfoCircle,
+  faTerminal,
+} from "@fortawesome/free-solid-svg-icons";
+// import axios from "axios";
+import { ScrollTop } from "primereact/scrolltop";
 
-function App() {
+import * as Views from "./views";
+import {
+  setIsNavExpanded,
+  setSelectedNav,
+} from "./store/actions/action-creators";
+
+const App = () => {
+  const dispatch = useDispatch();
+  const isNavExpanded = useSelector((store) => store.global.isNavExpanded);
+  const selectedNav = useSelector((store) => store.global.selectedNav);
+
+  useEffect(() => {}, []);
+
+  const renderItem = (title, content) => {
+    return (
+      <NavPaneItem
+        title={title}
+        icon={renderIcon(title)}
+        color="#000000"
+        background="#ffffff"
+        theme="dark"
+        selected={selectedNav === title}
+        onSelect={() => dispatch(setSelectedNav(title))}
+        padding="10px 20px"
+        push
+      >
+        <Text color="#000000" background="#ffffff" theme="dark">
+          {content}
+        </Text>
+      </NavPaneItem>
+    );
+  };
+
+  const renderIcon = (name) => {
+    switch (name) {
+      case "Home":
+        return <FontAwesomeIcon icon={faLaptopHouse} />;
+      case "Graph Database":
+        return <FontAwesomeIcon icon={faProjectDiagram} />;
+      case "Cypher Queries":
+        return <FontAwesomeIcon icon={faTerminal} />;
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <View color="#000000" style={{ minHeight: "100vh" }} background="#000000">
+      <NavPane
+        openLength={200}
+        push
+        color="#cc7f29"
+        theme="dark"
+        defaultIsPaneExpanded={isNavExpanded}
+        onPaneToggle={() => dispatch(setIsNavExpanded())}
+      >
+        {renderItem("Home", <Views.Home />)}
+        {renderItem("Graph Database", <Views.GraphDB />)}
+        {renderItem("Cypher Queries", <Views.Queries />)}
+      </NavPane>
+
+      <ScrollTop style={{ right: "calc(100vw / 18)" }} />
+    </View>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,134 @@
+// Inits
+:root {
+  --primary-color: #cc7f29;
+}
+
+body {
+  user-select: none;
+  background-repeat: repeat;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+// Fixing Hamburger Colors
+[viewBox="0 0 20 12.5"] {
+  width: 40px !important;
+  height: auto !important;
+  max-height: 33px !important;
+  transform: translateY(3px);
+}
+
+// .btn {
+//   background-color: rgb(148, 136, 136);
+// }
+
+#root > div > div > div:nth-child(2) > div > div:nth-child(2) {
+  padding: 0 !important;
+}
+
+.p-sidebar-content::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+// Sections
+.home-section {
+  // margin: -10px -20px;
+
+  > img {
+    margin-bottom: -7px;
+    height: calc(100vh - 48px) !important;
+    object-fit: cover;
+
+    &.expanded {
+      width: calc(100vw - 200px) !important;
+    }
+    &.not-expanded {
+      width: calc(100vw - 48px) !important;
+    }
+  }
+
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+
+    > h1 {
+      background-color: black;
+      color: #cc7f29;
+      padding: 1rem 3rem;
+      width: 100%;
+      text-align: center;
+      max-width: 498px;
+    }
+
+    > div {
+      background-color: black;
+      color: white;
+      padding: 1rem 3rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      p.version {
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: stretch;
+        gap: 0.5rem;
+
+        > div,
+        input {
+          margin-bottom: 0 !important;
+        }
+
+        input {
+          width: 200px;
+        }
+
+        .btn {
+          margin-top: 1rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 1rem;
+          height: 32px;
+        }
+      }
+    }
+  }
+}
+
+// @media all and (max-width: 500px) {
+//   .home-section {
+//   }
+// }
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
