@@ -29,8 +29,23 @@ const App = () => {
   const dispatch = useDispatch();
   const isNavExpanded = useSelector((store) => store.global.isNavExpanded);
   const selectedNav = useSelector((store) => store.global.selectedNav);
+  const isConnected = useSelector((store) => store.global.isConnected);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const navs = document.querySelectorAll(
+      "#root > div > div > div:nth-child(1) > a"
+    );
+
+    if (isConnected) {
+      navs[0].style.display = "none";
+      navs[1].style.display = "flex";
+      navs[2].style.display = "flex";
+    } else {
+      navs[0].style.display = "flex";
+      navs[1].style.display = "none";
+      navs[2].style.display = "none";
+    }
+  }, [isConnected]);
 
   const renderItem = (title, content) => {
     return (

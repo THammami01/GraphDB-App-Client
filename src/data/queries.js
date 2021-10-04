@@ -4,8 +4,8 @@ const queries = [
     query: "MATCH(n)\nRETURN(n);",
   },
   {
-    title: "Display Medical Records Only",
-    query: `MATCH(n: MedicalRecord)\nRETURN(n);`,
+    title: "Display Patients' Nodes Only",
+    query: `MATCH(p: Patient)\nRETURN(p);`,
   },
   {
     title: "Delete All Nodes",

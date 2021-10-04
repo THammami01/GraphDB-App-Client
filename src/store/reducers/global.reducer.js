@@ -1,10 +1,11 @@
 import * as _ from "../actions/action-types";
-import { getSaveIsNavExpanded } from "../../utils/functions";
+import { getIsNavExpanded } from "../../utils/functions";
 
 const initialState = {
   isLoading: false,
-  isNavExpanded: getSaveIsNavExpanded(),
+  isNavExpanded: getIsNavExpanded(),
   selectedNav: "Home",
+  isConnected: false,
 };
 
 const globalReducer = (state = initialState, action) => {
@@ -21,6 +22,9 @@ const globalReducer = (state = initialState, action) => {
     case _.SET_SELECTED_NAV:
       return { ...state, selectedNav: payload };
 
+    case _.SET_IS_CONNECTED:
+      return { ...state, isConnected: payload }
+      
     default:
       return state;
   }

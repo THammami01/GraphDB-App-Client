@@ -35,8 +35,10 @@ const MedicalRecord = ({ res: mrRes, deleteMR }) => {
     if (e.target.files[0] !== undefined) {
       // console.log(e.target.files[0]);
 
+      console.log(e.target.files[0].type);
       const mimeType = e.target.files[0].type;
-      const mimeTypeCat = mimeType.substring(0, mimeType.indexOf("/"));
+      // const mimeTypeCat = mimeType.substring(0, mimeType.indexOf("/"));
+      const [mimeTypeCat, mimeTypeSecCat] = mimeType.split("/");
       let format;
       let type = "simple";
 
@@ -51,8 +53,38 @@ const MedicalRecord = ({ res: mrRes, deleteMR }) => {
           format = "VID";
           break;
         case "application":
-          format = "PDF";
           type = "composed";
+
+          switch (mimeTypeSecCat) {
+            case "pdf":
+              format = "PDF";
+              break;
+
+            case "msword":
+              format = "MS_DOC";
+              break;
+            case "vnd.openxmlformats-officedocument.wordprocessingml.document":
+              format = "MS_DOCX";
+              break;
+
+            case "vnd.ms-powerpoint":
+              format = "MS_PTT";
+              break;
+            case "vnd.openxmlformats-officedocument.presentationml.presentation":
+              format = "MS_PPTX";
+              break;
+
+            case "vnd.ms-excel":
+              format = "MS_XLS";
+              break;
+            case "vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+              format = "MS_XLSX";
+              break;
+
+            default:
+              break;
+          }
+
           break;
         case "text":
           format = "TXT";
@@ -79,25 +111,27 @@ const MedicalRecord = ({ res: mrRes, deleteMR }) => {
             path: `assets/uploaded/${e.target.files[0].name}`,
           };
 
-          // console.log(res);
-          // console.log("FILENODE:");
-          // console.log(fileNode);
+          console.log("FILE NODE");
+          console.log(fileNode);
 
           axios
             .post("/file", fileNode)
             .then((res) => {
               // console.log(res);
               setIsAddingFile(false);
-              handleRefreshFiles();
+              if (mrContainedFiles !== null) handleRefreshFiles();
+              uploadFileInputRef.current.value = "";
             })
             .catch((err) => {
               // console.log(err);
               setIsAddingFile(false);
+              uploadFileInputRef.current.value = "";
             });
         })
         .catch((err) => {
           // console.log(err);
           setIsAddingFile(false);
+          uploadFileInputRef.current.value = "";
         });
     }
   };
@@ -120,14 +154,14 @@ const MedicalRecord = ({ res: mrRes, deleteMR }) => {
               setMrContainedFiles(res.data.resList);
               setComposedTypesFiles(() => {
                 const d = res.data.resList
-                  .filter((el) => el.type === "composed")
+                  ?.filter((el) => el.type === "composed")
                   .map((el) => ({ [el.uuid]: null }));
                 return d;
               });
             } else {
               setComposedTypesFiles((composedTypesFiles) => ({
                 ...composedTypesFiles,
-                [uuid]: res.data.resList.reverse(),
+                [uuid]: res.data.resList?.reverse(),
               }));
             }
           })
@@ -176,13 +210,13 @@ const MedicalRecord = ({ res: mrRes, deleteMR }) => {
   };
 
   const deleteFile = (uuid) => {
-    setMrContainedFiles((mrContainedFiles) =>
-      mrContainedFiles.filter((el) => el.uuid !== uuid)
-    );
-
     axios
       .delete("/file", { data: { uuid } })
       .then((res) => {
+        setMrContainedFiles((mrContainedFiles) =>
+          mrContainedFiles?.filter((el) => el.uuid !== uuid)
+        );
+
         // setTimeout(() => {
         //   // fetchContainedFiles(mr.medicalRecord.uuid);
         // }, 500);
@@ -270,17 +304,24 @@ const MedicalRecord = ({ res: mrRes, deleteMR }) => {
             <p>
               <i>Loading...</i>
             </p>
-          ) : mrContainedFiles.length === 0 ? (
+          ) : mrContainedFiles?.length === 0 ? (
             <p>No files found.</p>
           ) : (
             mrContainedFiles?.map((res, idx) => {
               return (
-                <div key={idx}>
+                <div key={res.uuid}>
                   <p>
                     {res.type === "simple" ? (
-                      <span className={`expand-section clickable`}>
+                      <span
+                        className={`expand-section`}
+                        style={{ cursor: "initial" }}
+                      >
                         <i
-                          style={{ fontSize: "0.8rem", visibility: "hidden" }}
+                          style={{
+                            fontSize: "0.8rem",
+                            visibility: "hidden",
+                            cursor: "initial",
+                          }}
                           className="pi pi-angle-right"
                         ></i>
                       </span>
@@ -355,7 +396,7 @@ const MedicalRecord = ({ res: mrRes, deleteMR }) => {
           type="file"
           style={{ display: "none" }}
           onChange={(e) => handleFileInputChange(e)}
-          accept="image/*,audio/*,video/*,application/pdf,text/plain"
+          accept="image/*, audio/*, video/*, application/pdf, text/plain, .doc, .docx, .ppt, .pptx, .xls, .xlsx"
         />
       </div>
 

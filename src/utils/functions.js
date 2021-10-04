@@ -1,4 +1,4 @@
-export const getSaveIsNavExpanded = () => {
+export const getIsNavExpanded = () => {
   const isNavExpanded = localStorage.getItem("isNavExpanded");
   if (isNavExpanded === null) return true;
   else return isNavExpanded === "true";
@@ -12,7 +12,7 @@ export const getSaveIsNavExpanded = () => {
 export const getReadableDate = (dateStr) => {
   const dateArr = dateStr
     .split("-")
-    .reverse()
+    ?.reverse()
     .map((el) => +el);
 
   const months = [

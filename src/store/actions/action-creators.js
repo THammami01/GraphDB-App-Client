@@ -20,3 +20,10 @@ export const setIsNavExpanded = (payload) => {
     payload,
   };
 };
+
+export const setIsConnected = (payload) => {
+  return {
+    type: _.SET_IS_CONNECTED,
+    payload,
+  };
+};

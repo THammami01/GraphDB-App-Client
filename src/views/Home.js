@@ -3,9 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button, ProgressCircle, TextInput } from "react-desktop/windows";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDatabase } from "@fortawesome/free-solid-svg-icons";
-import { setIsLoading } from "../store/actions/action-creators";
+import {
+  setIsConnected,
+  setIsLoading,
+  setSelectedNav,
+} from "../store/actions/action-creators";
 import axios from "axios";
 import cover from "../assets/cover.jpg";
+import { remote_connection_password } from "../data/secrets"
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -16,6 +21,9 @@ export const Home = () => {
   const passwordRef = useRef();
   const [connHelper, setConnHelper] = useState("");
 
+  // useEffect(() => {
+  // }, [])
+  
   const getProperTitleWelcome = () => {
     const _ = localStorage.getItem("notFirstTimeLoggedIn");
     if (_ === null) {
@@ -50,6 +58,11 @@ export const Home = () => {
           .post("/establish-connections", formData)
           .then((res) => {
             setConnHelper("Authentication successful.");
+
+            setTimeout(() => {
+              dispatch(setSelectedNav("Graph Database"));
+              dispatch(setIsConnected(true));
+            }, 500);
           })
           .catch((err) => {
             setConnHelper("An error occured.");
@@ -85,7 +98,10 @@ export const Home = () => {
               label="Username"
               name="username"
               placeholder="Enter Username"
+              value="neo4j"
               autoComplete="off"
+              // readonly
+              disabled
               onKeyDown={handleKeyDown}
             />
 
@@ -97,7 +113,10 @@ export const Home = () => {
               label="Password"
               name="password"
               placeholder="Enter Password"
+              // value="paces-affair-roller"
+              value={remote_connection_password}
               password
+              disabled
               onKeyDown={handleKeyDown}
             />
 

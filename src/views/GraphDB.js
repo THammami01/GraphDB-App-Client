@@ -15,12 +15,12 @@ export const GraphDB = () => {
   const deleteMR = (mrUuid, setIsBeingDeleted) => {
     setIsBeingDeleted(true);
     setTimeout(() => {
-      setRestList(resList.filter((el) => el.medicalRecord.uuid !== mrUuid));
-
+      
       axios
-        .delete("/medical-record", { data: { uuid: mrUuid } })
-        .then((res) => {
-          setIsBeingDeleted(false);
+      .delete("/medical-record", { data: { uuid: mrUuid } })
+      .then((res) => {
+        setRestList(resList?.filter((el) => el.medicalRecord.uuid !== mrUuid));
+        setIsBeingDeleted(false);
         })
         .catch((err) => {
           setIsBeingDeleted(false);
@@ -33,7 +33,7 @@ export const GraphDB = () => {
       axios
         .get("/medical-record")
         .then((res) => {
-          setRestList(res.data.resList.reverse());
+          setRestList(res.data.resList?.reverse());
         })
         .catch((err) => {});
     }, 1000);
@@ -99,7 +99,7 @@ export const GraphDB = () => {
           </p>
         ) : (
           resList?.map((res, idx) => {
-            return <MedicalRecord key={idx} res={res} deleteMR={deleteMR} />;
+            return <MedicalRecord key={res.medicalRecord.uuid} res={res} deleteMR={deleteMR} />;
           })
         )}
       </div>
